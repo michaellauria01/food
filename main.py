@@ -11,6 +11,8 @@ def main():
         json.dump(recipe_to_ingredients, json_file, ensure_ascii=False, indent=4)
 
     print("Recipes have been saved to recipes.json")
+    for i in master_list:
+        print(i)
 
 def getHTM():
     directory_path =  os.getcwd()+'/htm'
@@ -24,7 +26,7 @@ def getHTM():
             # Open and read the HTML file
             with open(file_path, 'r', encoding='utf-8') as file:
                 amt_to_ingredient = dict()
-                amt_to_recipe_list = list()
+
                 content = file.read()
 
                 # Parse the HTML content with BeautifulSoup
@@ -39,7 +41,8 @@ def getHTM():
 
                 for ingredient in ingredient_list:
                     ingredient_split = ingredient.split("\n\n")
-                    amt_to_ingredient[ingredient_split[0].replace("\n", " ")] = ingredient_split[1].strip()
+                    amt_to_ingredient[ingredient_split[1].strip()] = ingredient_split[0].replace("\n", " ")
+                    master_list.add(ingredient_split[1].strip())
 
                 recipe_to_ingredients[recipe] = amt_to_ingredient
                 recipe_to_ingredients.update(recipe_to_ingredients)
@@ -58,4 +61,5 @@ def getURL():
 
 if __name__ == '__main__':
     recipe_to_ingredients = dict()
+    master_list = set()
     main()
